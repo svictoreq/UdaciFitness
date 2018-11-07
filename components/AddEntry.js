@@ -47,6 +47,12 @@ export default class AddEntry extends Component {
     })
   }
 
+  slide = (metric, value) => {
+    this.setState(() => ({
+      [metric]: value,
+    }));
+  }
+
   submit = () => {
     const key = timeToString();
     const entry = this.state;
