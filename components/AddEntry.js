@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getMetricMetaInfo, timeToString } from '../utils/helpers';
+import { connect } from 'react-redux';
+import { addEntry } from '../actions';
+import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers';
 import { submitEntry, removeEntry } from '../utils/api';
 import UdaciSlider from './UdaciSlider';
 import UdaciStepper from './UdaciStepper';
@@ -16,7 +18,7 @@ function SubmitBtn ({ onPress }) {
   );
 }
 
-export default class AddEntry extends Component {
+class AddEntry extends Component {
   state = {
     run: 0,
     bike: 0,
@@ -57,6 +59,7 @@ export default class AddEntry extends Component {
   }
 
   submit = () => {
+    const { dispatchAddEntry } = this.props;
     const key = timeToString();
     const entry = this.state;
 
@@ -68,7 +71,9 @@ export default class AddEntry extends Component {
       eat: 0,
     }))
 
-    // Update Redux
+    dispatchAddEntry({
+      [key]: entry,
+    });
 
     // Navigate to home
 
@@ -78,6 +83,7 @@ export default class AddEntry extends Component {
   }
 
   reset = () => {
+    const { dispatchAddEntry } = this.props;
     const key = timeToString();
 
     this.setState(() => ({
@@ -88,7 +94,9 @@ export default class AddEntry extends Component {
       eat: 0,
     }))
 
-    // Update Redux
+    dispatchAddEntry({
+      [key]: getDailyReminderValue(),
+    });
 
     // Route to home
 
@@ -96,9 +104,10 @@ export default class AddEntry extends Component {
   }
 
   render() {
+    const { alreadyLogged } = this.props;
     const metaInfo = getMetricMetaInfo();
 
-    if (this.props.alreadyLogged) {
+    if (alreadyLogged) {
       return (
         <View>
           <Ionicons
@@ -145,3 +154,18 @@ export default class AddEntry extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const key = timeToString();
+  return {
+    alreadyLogged: state[key] && typeof state[key].today === 'undefined',
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  dispatchAddEntry: (entry) => dispatch(addEntry(entry)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddEntry);
