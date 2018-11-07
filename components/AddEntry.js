@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getMetricMetaInfo, timeToString } from '../utils/helpers';
+import { submitEntry, removeEntry } from '../utils/api';
 import UdaciSlider from './UdaciSlider';
 import UdaciStepper from './UdaciStepper';
 import DateHeader from './DateHeader';
@@ -71,7 +72,7 @@ export default class AddEntry extends Component {
 
     // Navigate to home
 
-    // Save to 'DB'
+    submitEntry({ key, entry });
 
     // Clear local notification
   }
@@ -91,13 +92,13 @@ export default class AddEntry extends Component {
 
     // Route to home
 
-    // Update 'DB'
+    removeEntry(key);
   }
 
   render() {
     const metaInfo = getMetricMetaInfo();
 
-    if (/*this.props.alreadyLogged*/ true) {
+    if (this.props.alreadyLogged) {
       return (
         <View>
           <Ionicons
