@@ -7,6 +7,7 @@ import { fetchCalendarResults } from '../utils/api';
 import { white } from '../utils/colors';
 import { receiveEntries, addEntry } from '../actions';
 import DateHeader from './DateHeader';
+import MetricCard from './MetricCard';
 
 class History extends Component {
   componentDidMount() {
@@ -36,7 +37,7 @@ class History extends Component {
               </Text>
             </View>)
           : <TouchableOpacity onPress={() => console.log('Pressed')}>
-              <Text>{JSON.stringify(metrics)}</Text>
+              <MetricCard metrics={metrics} date={formattedDate} />
             </TouchableOpacity>
         }
       </View>
