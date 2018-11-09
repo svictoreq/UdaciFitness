@@ -15,10 +15,10 @@ const MetricCard = ({ date, metrics }) => {
           <View style={[styles.metric]} key={metric}>
             {getIcon()}
             <View>
-              <Text style={{fontSize: 20}}>
+              <Text style={[styles.displayName]}>
                 {displayName}
               </Text>
-              <Text style={{ fontSize: 16, color: gray }}>
+              <Text style={[styles.metricValues]}>
                 {metrics[metric]} {unit}
               </Text>
             </View>
@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
   metric: {
     flexDirection: 'row',
     marginTop: 12,
+  },
+  displayName: {
+    fontSize: 20,
+  },
+  metricValues: {
+    fontSize: 16,
+    color: gray,
   },
 });
 
