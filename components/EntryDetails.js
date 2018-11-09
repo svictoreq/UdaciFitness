@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { addEntry } from '../actions';
+import { removeEntry } from '../utils/api';
+import { timeToString, getDailyReminderValue } from '../utils/helpers';
 import { white } from '../utils/colors';
 import MetricCard from './MetricCard';
+import TextButton from './TextButton';
 
 class EntryDetails extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -23,21 +27,37 @@ class EntryDetails extends Component {
     };
   }
 
+  shouldComponentUpdate (nextProps) {
+    const {
+      metrics,
+    } = nextProps;
+
+    return metrics !== null && !metrics.today;
+  }
+
+  reset = () => {
+    const {
+      navigation: { goBack },
+      resetEntry,
+      entryId,
+    } = this.props;
+
+    resetEntry();
+    goBack();
+    removeEntry();
+  }
+
   render() {
     const {
-      navigation: {
-        state: {
-          params: {
-            entryId,
-          },
-        },
-      },
+      entryId,
       metrics,
     } = this.props;
     return (
       <View style={[styles.container]}>
         <MetricCard metrics={metrics} />
-        <Text>EntryDetails.js - {entryId}</Text>
+        <TextButton onPress={this.reset} style={[styles.textButton]}>
+          RESET
+        </TextButton>
       </View>
     );
   }
@@ -48,6 +68,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     padding: 15,
+  },
+  textButton: {
+    margin: 20,
+    alignSelf: 'center',
   },
 });
 
@@ -66,4 +90,25 @@ const mapStateToProps = (state, { navigation }) => {
   };
 };
 
-export default connect(mapStateToProps)(EntryDetails);
+const mapDispatchToProps = (dispatch, { navigation }) => {
+  const {
+    state: {
+      params: {
+        entryId,
+      },
+    },
+  } = navigation;
+
+  return {
+    resetEntry: () => dispatch(addEntry({
+      [entryId]: timeToString() === entryId
+        ? getDailyReminderValue()
+        : null
+    })),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(EntryDetails);
