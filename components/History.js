@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { AppLoading } from 'expo';
 import UdaciFitnessCalendar from 'udacifitness-calendar';
 import { timeToString, getDailyReminderValue } from '../utils/helpers';
 import { fetchCalendarResults } from '../utils/api';
@@ -10,6 +11,10 @@ import DateHeader from './DateHeader';
 import MetricCard from './MetricCard';
 
 class History extends Component {
+  state = {
+    ready: false,
+  };
+
   componentDidMount() {
     const {
       dispatchReceiveEntries,
@@ -56,6 +61,9 @@ class History extends Component {
 
   render() {
     const { entries } = this.props;
+    const { ready } = this.state;
+
+    if (!ready) return <AppLoading />
     return (
       <UdaciFitnessCalendar
         items={entries}
