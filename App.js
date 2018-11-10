@@ -10,6 +10,7 @@ import reducer from './reducers';
 import History from './components/History';
 import AddEntry from './components/AddEntry';
 import EntryDetails from './components/EntryDetails';
+import Live from './components/Live';
 
 const UdaciStatusBar = ({ backgroundColor, ...props }) => (
   <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
@@ -30,6 +31,13 @@ const Tabs = TabNavigator({
     navigationOptions: {
       tabBarLabel: 'Add Entry',
       tabBarIcons: ({ tintColor }) => <FontAwesome name={'plus-square'} size={30} color={tintColor} />,
+    },
+  },
+  Live: {
+    screen: Live,
+    navigationOptions: {
+      tabBarLabel: 'Live',
+      tabBarIcons: ({ tintColor }) => <Ionicons name={'ios-speedometer'} size={30} color={tintColor} />,
     },
   },
 }, {
