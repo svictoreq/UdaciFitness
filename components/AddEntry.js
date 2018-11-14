@@ -1,9 +1,11 @@
+// components/AddEntry.js
+
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
-import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers';
+import { getMetricMetaInfo, timeToString, getDailyReminderValue, clearLocalNotification, setLocalNotification } from '../utils/helpers';
 import { submitEntry, removeEntry } from '../utils/api';
 import { white, purple, green } from '../utils/colors';
 import UdaciSlider from './UdaciSlider';
@@ -83,7 +85,8 @@ class AddEntry extends Component {
 
     submitEntry({ key, entry });
 
-    // Clear local notification
+    clearLocalNotification()
+      .then(setLocalNotification)
   }
 
   reset = () => {

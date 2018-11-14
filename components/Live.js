@@ -1,3 +1,5 @@
+// components/Live.js
+
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Location, Permissions } from 'expo';
