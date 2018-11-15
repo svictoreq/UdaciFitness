@@ -1,7 +1,9 @@
+// components/UdaciStepper.js
+
 import React from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { white, purple } from '../utils/colors';
+import { white, purple, gray } from '../utils/colors';
 
 export default function UdaciStepper ({ max, unit, step, value, onIncrement, onDecrement }) {
   const minusName = Platform.OS === 'ios' ? 'ios-remove' : 'md-remove';
@@ -26,9 +28,9 @@ export default function UdaciStepper ({ max, unit, step, value, onIncrement, onD
   return (
     <View style={[styles.row, { justifyContent: 'space-between' }]}>
       {stepper}
-      <View>
-        <Text>{value}</Text>
-        <Text>{unit}</Text>
+      <View style={[styles.metricCounter]}>
+        <Text style={[styles.value]}>{value}</Text>
+        <Text style={[styles.unit]}>{unit}</Text>
       </View>
     </View>
   );
@@ -67,9 +69,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
   },
-  metrics: {
+  metricCounter: {
     width: 85,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  value:{
+    fontSize: 24,
+    textAlign: 'center',
+  },
+  unit: {
+    fontSize: 18,
+    color: gray,
   },
 });
